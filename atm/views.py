@@ -6,7 +6,7 @@ import threading
 users_balance = {} # Save users balance
 lock = threading.Lock() # lock critical section
 
-def is_valid_user_id(user_id): #Check if the user_id is number
+def is_valid_user_id(user_id):
     return user_id.isdigit()
 
 @csrf_exempt
@@ -39,7 +39,7 @@ def deposit(request, user_id): # Deposit to user
         with lock: # Prevent race condition
             if amount <= 0:
                 return JsonResponse({"err": "Invalid deposit amount"}, status=400)
-            users_balance[user_id] = users_balance.get(user_id, 0) + amount # Update the dict to the new balance
+            users_balance[user_id] = users_balance.get(user_id, 0) + amount
             print(f"user {user_id} new balance: {users_balance[user_id]}")
             return JsonResponse({"user_id": user_id, "new_balance": users_balance[user_id]})
 
@@ -56,7 +56,7 @@ def withdraw(request, user_id): # Withdraw from user
     
     try:
         data = json.loads(request.body)
-        amount = float(data.get("amount", 0)) # Cast to float
+        amount = float(data.get("amount", 0))
 
         with lock: # Prevent race condition
             if amount <= 0:
@@ -66,7 +66,7 @@ def withdraw(request, user_id): # Withdraw from user
                 print(f"user {user_id}: Insuffiecient funds")
                 return JsonResponse({"err": "Insufficient funds"}, status=400)
 
-            users_balance[user_id] -= amount # Update the dict to the new balance
+            users_balance[user_id] -= amount
             print(f"user {user_id} new balance: {users_balance[user_id]}")
             return JsonResponse({"user_id": user_id, "new_balance": users_balance[user_id]})
 

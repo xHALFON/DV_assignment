@@ -46,10 +46,10 @@ pytest -s
 ## Example Usage
 ```bash
 # Get balance
-curl http://localhost:8000/balance/123/
+curl https://dvatm-fa0fd475a642.herokuapp.com/balance/123/
 
 # Deposit
-curl -X POST http://localhost:8000/deposit/123/ ^ -H "Content-Type: application/json" ^ -d "{\"amount\": 100}"
+curl -X POST https://dvatm-fa0fd475a642.herokuapp.com/deposit/123/ ^ -H "Content-Type: application/json" ^ -d "{\"amount\": 100}"
 
 # Withdraw
-curl -X POST http://localhost:8000/withdraw/123/ ^ -H "Content-Type: application/json" ^ -d "{\"amount\": 50}"
+curl -X POST https://dvatm-fa0fd475a642.herokuapp.com/withdraw/123/ ^ -H "Content-Type: application/json" ^ -d "{\"amount\": 50}"
