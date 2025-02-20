@@ -76,6 +76,7 @@ WSGI_APPLICATION = 'ATM_server.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.dummy',
     }
 }
 

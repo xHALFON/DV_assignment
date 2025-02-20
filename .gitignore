@@ -6,6 +6,10 @@ __pycache__/
 # Virtual environment
 .venv/
 
+# Testing
+.pytest_cache/
+pytest-report.xml
+
 # Django database files
 *.sqlite3
 
