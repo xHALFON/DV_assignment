@@ -19,3 +19,5 @@ pytest-report.xml
 # IDE and editor specific files
 .vscode/
 .idea/
+
+staticfiles/

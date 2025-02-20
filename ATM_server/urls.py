@@ -15,7 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+from ATM_server import settings
 from atm.views import welcome, get_balance, deposit, withdraw
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', welcome),
@@ -23,4 +25,3 @@ urlpatterns = [
     path('deposit/<str:user_id>/', deposit, name='deposit'),
     path('withdraw/<str:user_id>/', withdraw, name='withdraw'),
 ]
-
