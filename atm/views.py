@@ -43,5 +43,29 @@ def deposit(request, user_id): # Deposit to user
         return JsonResponse({"err": "Invalid JSON data"}, status=400)
 
 @csrf_exempt
+def withdraw(request, user_id): # Withdraw from user
+    if not is_valid_user_id(user_id):
+        return JsonResponse({"err": "Invalid user_id. Only numbers allowed"}, status=400)
+    
+    if request.method != "POST":
+        return JsonResponse({"err": "Invalid request method"}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        amount = float(data.get("amount", 0)) # Cast to float
+
+        if amount <= 0: # check if the amount is legal
+            return JsonResponse({"err": "Invalid withdrawal amount"}, status=400)
+        
+        if users_balance.get(user_id, 0) < amount: # Check if user has enough money
+            return JsonResponse({"err": "Insufficient funds"}, status=400)
+
+        users_balance[user_id] -= amount # Update the dict to the new balance
+        return JsonResponse({"user_id": user_id, "new_balance": users_balance[user_id], "dict": users_balance})
+
+    except (ValueError, json.JSONDecodeError):
+        return JsonResponse({"err": "Invalid JSON data"}, status=400)
+
+@csrf_exempt
 def welcome(request): # Welcome screen
     return HttpResponse("Welcome to atm")
