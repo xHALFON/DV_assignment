@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import threading
 
-users_balance = {} #Save users balance
+users_balance = {} # Save users balance
 lock = threading.Lock() # lock critical section
 
 def is_valid_user_id(user_id): #Check if the user_id is number
@@ -14,12 +14,12 @@ def get_balance(request, user_id): # Get balance from user
     if not is_valid_user_id(user_id):
         return JsonResponse({"err": "Invalid user_id. Only numbers allowed"}, status=400)
     
-    if request.method != "GET": #Check if the method is get
+    if request.method != "GET":
         return JsonResponse({"err": "Invalid request method"}, status=405)
     
     try:
         with lock: # Prevent race condition
-            balance = users_balance.get(user_id,0) # Fetch the user balance
+            balance = users_balance.get(user_id,0)
             return JsonResponse({"user_id": user_id, "balance": balance})
     except Exception as e:
         return JsonResponse({"err": str(e)}, status=400)
@@ -34,10 +34,10 @@ def deposit(request, user_id): # Deposit to user
     
     try:
         data = json.loads(request.body)
-        amount = float(data.get("amount", 0)) # Cast to float
+        amount = float(data.get("amount", 0))
         
         with lock: # Prevent race condition
-            if amount <= 0: # Check if the amount is legal
+            if amount <= 0:
                 return JsonResponse({"err": "Invalid deposit amount"}, status=400)
             users_balance[user_id] = users_balance.get(user_id, 0) + amount # Update the dict to the new balance
             print(f"user {user_id} new balance: {users_balance[user_id]}")
@@ -59,7 +59,7 @@ def withdraw(request, user_id): # Withdraw from user
         amount = float(data.get("amount", 0)) # Cast to float
 
         with lock: # Prevent race condition
-            if amount <= 0: # check if the amount is valid
+            if amount <= 0:
                 return JsonResponse({"err": "Invalid withdrawal amount"}, status=400)
             
             if users_balance.get(user_id, 0) < amount: # Check if user has enough money
