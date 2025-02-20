@@ -2,6 +2,10 @@ import pytest
 import requests
 
 BASE_URL = "http://127.0.0.1:8000"  # Server_url
+def get_user_balance(user_id):
+    balance_response = requests.get(f"{BASE_URL}/balance/{user_id}/")
+    user_balance = balance_response.json().get("balance") # take the current user balance
+    return user_balance
 
 def test_welcome(): # Check welcome endpoint
     response = requests.get(f"{BASE_URL}/")
@@ -12,8 +16,7 @@ def test_deposit(): # Check deposit endpoint
     user_id = "123"
     deposit_data = {"amount": 100.0}
 
-    balance_response = requests.get(f"{BASE_URL}/balance/{user_id}/")
-    user_balance = balance_response.json().get("balance") # take the current user balance
+    user_balance = get_user_balance(user_id) # take the current user balance
     
     response = requests.post(f"{BASE_URL}/deposit/{user_id}/", json=deposit_data)
     assert response.status_code == 200
@@ -23,8 +26,7 @@ def test_withdraw(): # Check withdraw endpoint
     user_id = "123"
     withdraw_data = {"amount": 50.0}
     
-    balance_response = requests.get(f"{BASE_URL}/balance/{user_id}/")
-    user_balance = balance_response.json().get("balance") # take the current user balance
+    user_balance = get_user_balance(user_id) # take the current user balance
     
     response = requests.post(f"{BASE_URL}/withdraw/{user_id}/", json=withdraw_data)
     assert response.status_code == 200
