@@ -19,6 +19,12 @@ A simple ATM system implemented in Django with thread-safe operations.
    ```bash
    python manage.py runserver
    ```
+   Run the server with docker:
+   ```bash
+   docker build -t atm_server .
+
+   docker run -p 8000:8000 atm_server
+   ```
 
 ## Testing
 Run the tests with:
