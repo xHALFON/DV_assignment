@@ -1,0 +1,1 @@
+web: gunicorn ATM_server.wsgi
