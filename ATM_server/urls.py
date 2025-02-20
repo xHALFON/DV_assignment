@@ -15,10 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from atm.views import welcome, get_balance
+from atm.views import welcome, get_balance, deposit
 
 urlpatterns = [
     path('', welcome),
     path('balance/<str:user_id>/', get_balance, name='get_balance'),
+    path('deposit/<str:user_id>/', deposit, name='deposit'),
 ]
 

@@ -1,5 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 users_balance = {} #Save users balance
 
@@ -19,6 +20,27 @@ def get_balance(request, user_id): # Get balance from user
         return JsonResponse({"user_id": user_id, "balance": balance, "dict": users_balance})
     except Exception as e:
         return JsonResponse({"err": str(e)}, status=400)
+
+@csrf_exempt
+def deposit(request, user_id): # Deposit to user
+    if not is_valid_user_id(user_id):
+        return JsonResponse({"err": "Invalid user_id. Only numbers allowed"}, status=400)
+        
+    if request.method != "POST":
+        return JsonResponse({"err": "Invalid request method"}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        amount = float(data.get("amount", 0)) # Cast to float
+        print(amount)
+        if amount <= 0: # Check if the amount is legal
+            return JsonResponse({"err": "Invalid deposit amount"}, status=400)
+        
+        users_balance[user_id] = users_balance.get(user_id, 0) + amount # Update the dict to the new balance
+        return JsonResponse({"user_id": user_id, "new_balance": users_balance[user_id], "dict": users_balance})
+
+    except (ValueError, json.JSONDecodeError):
+        return JsonResponse({"err": "Invalid JSON data"}, status=400)
 
 @csrf_exempt
 def welcome(request): # Welcome screen
