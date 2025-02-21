@@ -43,6 +43,9 @@ pytest -s
 - `POST /deposit/<user_id>/` - Deposit money
 - `POST /withdraw/<user_id>/` - Withdraw money
 
+## Scripts
+   `run.py`
+    is script that sends multiple deposit requests at the same time to check if the server can handle them correctly without any issues, like race conditions.
 ## Example Usage
 ```bash
 # Get balance
